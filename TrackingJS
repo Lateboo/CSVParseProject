@@ -52,44 +52,24 @@ Ezoic - top-page - top_of_page -->
 
 	<canvas id='chart' width="50" height="50"></canvas> 
 
-	
-<script>
-	
-	xlabels = [];
-
-	async function getData() {
-		const response = await fetch('test.csv');
-		const data = await response.text();
-		
-
-		const table = data.split('\n');
-		table.forEach(row => {
-			const columns = row.split(',');
-			const billRef = columns[5];
-			xlabels.push(billRef);
-			const pickup = columns[8];
-			const actualWeight = columns[22];
-				console.log(billRef, pickup, actualWeight);
-		});
-	};
-</script>
 
 <script>
-	const xlabel=[];
-	
+
+const xlabels=[];
+const yweight = [];
+
 	chartIt();
-
 	async function chartIt() {
 		await getData();
 	const ctx = document.getElementById('chart').getContext('2d');
 	const xlabels = [];
 	const myChart = new Chart(ctx, {
-		type: 'bar',
+		type: 'line',
 		data: {
 			labels: xlabels,
 			datasets: [{
 				label: 'Shipment Bill',
-				data: [12, 19, 3, 5, 2, 3],
+				data: yweight,
 				backgroundColor: [
 					'rgba(255, 99, 132, 0.2)',
 	
@@ -100,6 +80,24 @@ Ezoic - top-page - top_of_page -->
 		
 	});
 };
+
+
+	async function getData() {
+		const response = await fetch('test.csv');
+		const data = await response.text();
+		
+
+		const table = data.split('\n');
+		table.forEach(row => {
+			const columns = row.split(',');
+			const billRef = columns[5];
+			
+			const pickup = columns[8];
+			const actualWeight = columns[22];
+			yweight.push(actualWeight);
+				console.log(billRef, pickup, actualWeight);
+		});
+	};
 	</script>
 
   </body>
